@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
 import './App.css';
 import $ from 'jquery'
 import Item from './components/Item'
-import ReactDOM from "react-dom";
 
 class App extends Component {
 
@@ -14,7 +12,12 @@ class App extends Component {
 
         this.state.filterItems = this.state.items.slice();
 
-        this.filterItems = () => {
+        this.state.favorites = localStorage.getItem("avito_stor_favorites");
+
+        if (this.state.favorites === null)
+            this.state.favorites = [];
+
+        this.FilterItems = () => {
 
             this.setState((prev => {
 
@@ -44,13 +47,13 @@ class App extends Component {
                     to = Math.abs(to);
                 }
 
-                if (isNaN(from)){
+                if (isNaN(from)) {
                     document.getElementById("price_from").value = 0;
                     from = 0;
                 }
 
-                if ((isNaN(to))||(to === 0)){
-                    document.getElementById("price_to").value = Infinity;
+                if ((isNaN(to)) || (to === 0)) {
+                    document.getElementById("price_to").value = "";
                     to = Infinity;
                 }
 
@@ -59,8 +62,16 @@ class App extends Component {
                 if (filters.length !== 0) {
                     prev.items.forEach(item => {
 
-                        if ((filters.indexOf(item.category) !== -1) && ((item.price >= from)&&(item.price <= to))) {
-                            filterItems.push(item);
+                        if ((filters.length === 1) && (filters[0] === "chosen")) {
+                            if (this.state.favorites.indexOf(item.id) !== -1) {
+                                filterItems.push(item);
+                            }
+                        } else if ((filters.indexOf("chosen") === -1) || (this.state.favorites.indexOf(item.id) !== -1)) {
+
+                            if ((filters.indexOf(item.category) !== -1) && ((item.price >= from) && (item.price <= to))) {
+                                filterItems.push(item);
+                            }
+
                         }
                     });
                 } else {
@@ -81,11 +92,39 @@ class App extends Component {
 
                 return {
                     items: prev.items,
-                    filterItems: filterItems
+                    filterItems: filterItems,
+                    favorites: prev.favorites
                 };
 
             }))
 
+        };
+
+        this.ChangeFavorite = (item) => {
+
+            let favorites = JSON.parse(localStorage.getItem("avito_stor_favorites"));
+            if (favorites === null)
+                favorites = [];
+
+            if (favorites.indexOf(item.id) !== -1) {
+
+                for (let i = favorites.indexOf(item.id); i < favorites.length - 1; ++i) {
+                    favorites[i] = favorites[i + 1];
+                }
+                favorites.splice(favorites.length - 1, favorites.length);
+            } else {
+                favorites.push(item.id);
+            }
+
+            localStorage.setItem("avito_stor_favorites", JSON.stringify(favorites));
+
+            this.setState(prev => {
+                return {
+                    items: prev.items,
+                    filterItems: prev.filterItems,
+                    favorites: favorites
+                }
+            });
         }
 
     }
@@ -103,7 +142,7 @@ class App extends Component {
             success: function (data) {
                 result = data.data;
             },
-            error: function (xhr, ajaxOptions, thrownError) {
+            error: function () {
                 result = null;
             }
         });
@@ -150,6 +189,8 @@ class App extends Component {
     render() {
 
         let sellers = this.getSellers();
+        let favorites = this.state.favorites;
+        let favorites_btn = this.ChangeFavorite;
         return (
             <div className="App">
                 <div className="filter_container">
@@ -176,7 +217,7 @@ class App extends Component {
                             <span>Цена:</span>
                             <input type="text" placeholder="от" id="price_from"/>
                             <input type="text" placeholder="до" id="price_to"/>
-                            <button onClick={this.filterItems}>Найти</button>
+                            <button onClick={this.FilterItems}>Найти</button>
                         </div>
                     </div>
                 </div>
@@ -185,7 +226,8 @@ class App extends Component {
                         {
                             this.state.filterItems.map(function (item) {
                                 return (
-                                    <Item item={item} seller={sellers[item.relationships.seller]}/>
+                                    <Item btn={favorites_btn} favorites={favorites} item={item}
+                                          seller={sellers[item.relationships.seller]} key={item.id}/>
                                 )
                             })}
                     </div>

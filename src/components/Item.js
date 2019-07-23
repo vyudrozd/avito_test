@@ -11,8 +11,8 @@ function Item(props) {
                 <div className="photos">
                     <span>{"+ " + (props.item.pictures.length - 1)}</span>
                 </div>
-                <div className="star">
-                    <i className="material-icons chosen">star_rate</i>
+                <div className="star" onClick={() => {props.btn(props.item);}}>
+                    <i className={"material-icons chosen" + (props.favorites === null ? "" : props.favorites.indexOf(props.item.id)=== -1 ? "" : " yellow")}>star_rate</i>
                 </div>
             </div>
             <h2>{props.item.title.toUpperCase()}</h2>
