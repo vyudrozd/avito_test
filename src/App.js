@@ -216,7 +216,7 @@ class App extends Component {
                             </select>
                             <span>Цена:</span>
                             <input type="text" placeholder="от" id="price_from"/>
-                            <input type="text" placeholder="до" id="price_to"/>
+                            <input className="to_price" type="text" placeholder="до" id="price_to"/>
                             <button onClick={this.FilterItems}>Найти</button>
                         </div>
                     </div>

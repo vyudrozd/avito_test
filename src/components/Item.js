@@ -6,13 +6,17 @@ function Item(props) {
 
     return (
         <div className="item_holder">
-            <div className="image_holder">
-                <img src={props.item.pictures[0]}/>
-                <div className="photos">
-                    <span>{"+ " + (props.item.pictures.length - 1)}</span>
-                </div>
-                <div className="star" onClick={() => {props.btn(props.item);}}>
-                    <i className={"material-icons chosen" + (props.favorites === null ? "" : props.favorites.indexOf(props.item.id)=== -1 ? "" : " yellow")}>star_rate</i>
+            <div className="prevent_moving_h2">
+                <div className="image_holder">
+                    <img src={props.item.pictures[0]}/>
+                    <div className="photos">
+                        <span>{"+ " + (props.item.pictures.length - 1)}</span>
+                    </div>
+                    <div className="star" onClick={() => {
+                        props.btn(props.item);
+                    }}>
+                        <i className={"material-icons chosen" + (props.favorites === null ? "" : props.favorites.indexOf(props.item.id) === -1 ? "" : " yellow")}>star_rate</i>
+                    </div>
                 </div>
             </div>
             <h2>{props.item.title.toUpperCase()}</h2>
