@@ -59,10 +59,13 @@ class App extends Component {
                     from = 0;
                 }
 
-                if ((isNaN(to)) || (to === 0)) {
+
+                if ((isNaN(to)) || (to == 0)) {
                     document.getElementById("price_to").value = "";
                     to = Infinity;
                 }
+
+                console.log(to);
 
                 let filterItems = [];
 
