@@ -31,6 +31,13 @@ class App extends Component {
                 from = Number(from);
                 to = Number(to);
 
+                document.getElementById("price_from").value = from;
+                document.getElementById("price_to").value = to;
+
+                from = document.getElementById("price_from").value;
+                to = document.getElementById("price_to").value;
+
+
                 if (Math.abs(from) > Math.abs(to)) {
                     document.getElementById("price_from").value = Math.abs(to);
                     document.getElementById("price_to").value = Math.abs(from);
@@ -74,8 +81,15 @@ class App extends Component {
 
                         }
                     });
-                } else {
+                } else if ((from===0) && (to=== Infinity)) {
                     filterItems = this.state.items.slice();
+                }
+                else{
+                    prev.items.forEach(item=>{
+                        if ((item.price >= from) && (item.price <= to)){
+                            filterItems.push(item);
+                        }
+                    })
                 }
 
                 switch (sort) {
