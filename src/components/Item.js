@@ -19,13 +19,15 @@ function Item(props) {
                     </div>
                 </div>
             </div>
-            <h2>{props.item.title.toUpperCase()}</h2>
-            <span className="price">{getCorrectPrice(props.item.price)}</span>
-            <span
-                className="date">{props.item.date.getDate() + " " + months[props.item.date.getMonth()] + " " + props.item.date.getHours() + ":" + (String(props.item.date.getMinutes()).length === 1 ? "0" + props.item.date.getMinutes() : props.item.date.getMinutes())}</span>
-            <span>{(props.seller.isCompany ? "Компания " : "") + props.seller.name}</span>
-            <span
-                className={props.seller.rating > 3.5 ? "green" : "red"}>{"Рейтинг продавца: " + props.seller.rating + "/5"}</span>
+            <div className="prevent_relative">
+                <h2>{props.item.title.toUpperCase()}</h2>
+                <span className="price">{getCorrectPrice(props.item.price)}</span>
+                <span
+                    className="date">{props.item.date.getDate() + " " + months[props.item.date.getMonth()] + " " + props.item.date.getHours() + ":" + (String(props.item.date.getMinutes()).length === 1 ? "0" + props.item.date.getMinutes() : props.item.date.getMinutes())}</span>
+                <span>{(props.seller.isCompany ? "Компания " : "") + props.seller.name}</span>
+                <span
+                    className={props.seller.rating > 3.5 ? "green" : "red"}>{"Рейтинг продавца: " + props.seller.rating + "/5"}</span>
+            </div>
         </div>
     )
 }

@@ -103,7 +103,7 @@ body{
 }
 
 .image_holder{
-    position: relative;
+    position: static;
     width: 240px;
     height: 248px;
     margin-left: 7%;
@@ -139,6 +139,10 @@ body{
     color: rgba(220,220,220, 1);
 }
 
+.prevent_relative{
+    position: static;
+}
+
 .star{
     position: relative;
     background: rgba(0,0,0,0.2);
@@ -149,7 +153,9 @@ body{
 
 .item_holder h2 {
 
-    margin: 10px 0 0;
+    text-align: left;
+    margin: 0 0 0 10%;
+    width: 280px;
     float:left;
     color: #0091d9;
     cursor: pointer;
